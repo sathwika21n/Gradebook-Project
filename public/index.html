@@ -391,7 +391,9 @@
 
         async function checkAuthStatus() {
             try {
-                const response = await fetch(`${API_URL}/auth/user`);
+                const response = await fetch(`${API_URL}/auth/user`, {
+                    credentials: 'include'
+                });
                 const data = await response.json();
                 
                 if (data.user) {
@@ -438,7 +440,8 @@
                 const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
+                    body: JSON.stringify({ username, password }),
+                    credentials: 'include'
                 });
 
                 const data = await response.json();
@@ -457,7 +460,10 @@
         }
 
         async function logout() {
-            await fetch(`${API_URL}/auth/logout`, { method: 'POST' });
+            await fetch(`${API_URL}/auth/logout`, { 
+                method: 'POST',
+                credentials: 'include'
+            });
             isSignupMode = false;
             document.getElementById('authForm').reset();
             document.getElementById('authTitle').textContent = 'Login';
@@ -496,7 +502,8 @@
                 const response = await fetch(`${API_URL}/classes`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name })
+                    body: JSON.stringify({ name }),
+                    credentials: 'include'
                 });
 
                 if (!response.ok) throw new Error('Failed to add class');
@@ -516,7 +523,8 @@
                 const response = await fetch(`${API_URL}/classes/${classId}/grades`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ score })
+                    body: JSON.stringify({ score }),
+                    credentials: 'include'
                 });
 
                 if (!response.ok) throw new Error('Failed to add grade');
@@ -530,7 +538,10 @@
 
         async function deleteGrade(gradeId) {
             try {
-                await fetch(`${API_URL}/grades/${gradeId}`, { method: 'DELETE' });
+                await fetch(`${API_URL}/grades/${gradeId}`, { 
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
                 loadClasses();
             } catch (error) {
                 alert(error.message);
@@ -541,7 +552,10 @@
             if (!confirm('Delete this class and all grades?')) return;
 
             try {
-                await fetch(`${API_URL}/classes/${classId}`, { method: 'DELETE' });
+                await fetch(`${API_URL}/classes/${classId}`, { 
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
                 loadClasses();
             } catch (error) {
                 alert(error.message);
@@ -552,7 +566,9 @@
             const container = document.getElementById('classesContainer');
 
             try {
-                const response = await fetch(`${API_URL}/classes`);
+                const response = await fetch(`${API_URL}/classes`, {
+                    credentials: 'include'
+                });
                 const classes = await response.json();
 
                 if (classes.length === 0) {
@@ -582,7 +598,9 @@
 
                 // Load grades for each class
                 for (let cls of classes) {
-                    const gradesResp = await fetch(`${API_URL}/classes/${cls.id}/grades`);
+                    const gradesResp = await fetch(`${API_URL}/classes/${cls.id}/grades`, {
+                        credentials: 'include'
+                    });
                     const grades = await gradesResp.json();
                     const gradesDiv = document.getElementById(`grades-${cls.id}`);
                     
